@@ -1232,8 +1232,10 @@ plt.show()
 
 O que é interessante na visualização acima? Por que você a selecionou?
 
-**Answer**: Nesta análise é possível identificar no ano qual dia da semana há maior utilização das bicicletas.
-É que também há um padrão, uma distribuição uniforme na utilização das bicicletas na maioria dos dias da semana.
+**Answer**: Nesta análise é possível :
+- Identificar no ano, qual é o dia da semana, onde há maior utilização das bicicletas.
+- Há um padrão na utilização e distribuição uniforme das bicicletas na maioria dos dias da semana.
+- O tempo médio de utilização na semana estão próximo, as pessoas utilizam todos os dias as bicicletas com a mesma frequência.
 
 ## Conclusões
 
