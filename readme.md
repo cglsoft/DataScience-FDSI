@@ -665,13 +665,14 @@ Parece que existe 50% mais viagens feitas por assinantes (subscribers) no primei
 
 ```python
 # TODO: Faça um gráfico baseado nas durações
-trip_data.groupby('duration', as_index= False).count().plot.hist("Número de Viagens por Duration")
+
+trip_data['duration'].plot( kind="hist", title="Número de Viagens por Duration")
 ```
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x21fdad38e80>
+    <matplotlib.axes._subplots.AxesSubplot at 0x21c23750710>
 
 
 
