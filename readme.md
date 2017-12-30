@@ -49,6 +49,8 @@ Escreva pelo menos duas perguntas que você acha que poderiam ser respondidas us
 
 2 - Análise para identificar as mudanças no sistema e os horários e locais com problemas para locação.
 
+3 - Durante a semana, qual o dia da semana e horário com maior pico de utilização?
+
 > **Dica**: Se você clicar duas vezes nesta célula, você verá o texto se alterar removendo toda a formatação. Isso permite editar este bloco de texto. Este bloco de texto é escrito usando [Markdown](http://daringfireball.net/projects/markdown/syntax), que é uma forma de formatar texto usando cabeçalhos, links, itálico e muitas outras opções. Pressione **Shift** + **Enter** ou **Shift** + **Retorno** para voltar a mostrar o texto formatado.
 
 ## Usando visualizações para comunicar resultados em dados
@@ -87,7 +89,7 @@ Primeiro, carregue todos os pacotes e funções que você usará em sua análise
 > **Dica**: Você pode executar uma célula de código ou renderizar um texto em Markdown clicando na célula e usando o atalho do teclado **Shift** + **Enter** ou **Shift** + **Return**. Alternativamente, uma célula de código pode ser executada usando o botão **Play** na barra de ferramentas (a cima no IPython Notebook) depois de selecioná-la. Enquanto a célula estiver em execução, você verá um asterisco na mensagem à esquerda da célula, ou seja, `In [*]:`. O asterisco mudará para um número para mostrar que a execução foi concluída, Ex: `In [1]`. Se houver saída, ele aparecerá como `Out [1]:`, com um número apropriado para coincidir com o número de "In".
 
 
-```
+```python
 # Importa todas as bibliotecas necessárias
 %matplotlib inline
 import csv
@@ -97,10 +99,12 @@ import pandas as pd
 from babs_datacheck import question_3
 from babs_visualizations import usage_stats, usage_plot
 from IPython.display import display
+
+import matplotlib.pyplot as plt
 ```
 
 
-```
+```python
 # definição dos arquivos
 file_in  = '201402_trip_data.csv'
 file_out = '201309_trip_data.csv'
@@ -124,7 +128,7 @@ with open(file_out, 'w') as f_out, open(file_in, 'r') as f_in:
 O primeiro passo é analisar a estrutura do conjunto de dados para ver se há alguma limpeza de dados que devemos realizar. A célula abaixo irá ler o arquivo de dados amostrado que você criou na célula anterior. Você deve imprimir as primeiras linhas da tabela.
 
 
-```
+```python
 sample_data = pd.read_csv('201309_trip_data.csv')
 
 # TODO: escreva o código para visualizar as primeiras linhas
@@ -247,7 +251,7 @@ Nesta exploração, vamos nos concentrar nos fatores nos dados da viagem que afe
 Vamos primeiro abordar a última parte do processo de limpeza. Execute a célula de código abaixo para ver como as informações da estação estão estruturadas e observe como o código criará o mapeamento estação-cidade. Observe que o mapeamento da estação está configurado como uma função, `create_station_mapping()`. Uma vez que é possível que mais estações sejam adicionadas ou removidas ao longo do tempo, esta função nos permitirá combinar as informações da estação em todas as três partes dos nossos dados quando estivermos prontos para explorar tudo.
 
 
-```
+```python
 # Mostra as primeiras linhas do arquivo de dados das estações
 station_info = pd.read_csv('201402_station_data.csv')
 station_info.head()
@@ -343,7 +347,7 @@ station_info.head()
 Preencha a função abaixo de forma que a função retorne um mapeamento entre o id da estação (`station_id`) e a cidade em que ela se encontra (`landmark`).
 
 
-```
+```python
 # esta função será usada mais tarde para criar o mapeamento entre station e cidade
 def create_station_mapping(station_data):
     """
@@ -376,7 +380,7 @@ Na sequência, você deve criar colunas para o ano, mês, hora e dia da semana. 
 *Dica*: Você pode abrir uma nova caixa para testar um pedaço do código ou verificar uma variável que seja global. Caso ela esteja dentro da função, você também pode usar o comando `print()` para imprimi-la e ajudar no Debug.
 
 
-```
+```python
 def summarise_data(trip_in, station_data, trip_out):
     """
     Esta função recebe informações de viagem e estação e produz um novo
@@ -438,7 +442,7 @@ def summarise_data(trip_in, station_data, trip_out):
 Execute o bloco de código abaixo para chamar a função `summarise_data()` que você terminou na célula acima. Ela usará os dados contidos nos arquivos listados nas variáveis `trip_in` e `station_data` e escreverá um novo arquivo no local especificado na variável `trip_out`. Se você executou a limpeza de dados corretamente, o bloco de código abaixo imprimirá as primeiras linhas do DataFrame e uma mensagem que verificando se as contagens de dados estão corretas.
 
 
-```
+```python
 # processe os dados usando a função criada acima
 station_data = ['201402_station_data.csv']
 trip_in = ['201309_trip_data.csv']
@@ -447,7 +451,7 @@ summarise_data(trip_in, station_data, trip_out)
 ```
 
 
-```
+```python
 # Carregue os dados novamente mostrando os dados
 ## TODO: Complete o código para leitura dos dados no arquivo criado na função acima
 sample_data = pd.read_csv(trip_out)
@@ -551,7 +555,7 @@ display(sample_data.head())
 
 
 
-```
+```python
 # Verifica o DataFrame contando o número de pontos de dados com as características de 
 # tempo corretas.
 question_3(sample_data)
@@ -567,12 +571,12 @@ question_3(sample_data)
 Agora que você tem alguns dados salvos em um arquivo, vejamos algumas tendências iniciais nos dados. Algum código já foi escrito para você no script [babs_visualizations.py](babs_visualizations.py) para ajudar a resumir e visualizar os dados; Isso foi importado como as funções `usage_stats()` e `usage_plot()`. Nesta seção, vamos percorrer algumas das coisas que você pode fazer com as funções, e você usará as funções para você mesmo na última parte do projeto. Primeiro, execute a seguinte célula para carregar os dados. Depois preencha a célula abaixo com os comandos para verificar os dados básicos sobre os dados.
 
 
-```
+```python
 trip_data = pd.read_csv('201309_trip_summary.csv')
 ```
 
 
-```
+```python
 # Compute statistics for trip durations.
 
 # TODO: preencha os campos com os dados de acordo com o print
@@ -594,7 +598,7 @@ print('25% das viagens foram mais compridas do que {:.2f} minutos'.format(durati
     
 
 
-```
+```python
 # execute este campo para verificar os seu processamento acima.
 usage_stats(trip_data)
 ```
@@ -622,7 +626,7 @@ Lembre-se que o Pandas possui maneiras de plotar os gráficos diretamente de um 
 Na caixa abaixo, faça um gráfico de viagens x tipo de subscrição do tipo barras.
 
 
-```
+```python
 # TODO: plote um gráfico de barras que mostre quantidade de viagens por subscription_type
 # lembrando que quando o comando .plot é usado, se pode escolher o tipo de gráfico usando 
 # o parâmetro kind. Ex: plot(kind='bar')
@@ -643,7 +647,7 @@ trip_data['subscription_type'].value_counts().plot(kind='bar',figsize=(5,5))
 Para que você possa conferir se os seus gráficos estão corretos, usaremos a função `use_plot()`. O segundo argumento da função nos permite contar as viagens em uma variável selecionada, exibindo as informações em um gráfico. A expressão abaixo mostrará como deve ter ficado o seu gráfico acima.
 
 
-```
+```python
 # como o seu gráfico deve ficar. Descomente a linha abaixo caso queira rodar este comando
 usage_plot(trip_data, 'subscription_type')
 ```
@@ -657,7 +661,7 @@ usage_plot(trip_data, 'subscription_type')
 Parece que existe 50% mais viagens feitas por assinantes (subscribers) no primeiro mês do que outro tipos de consumidores. Vamos tentar uma outra variável. Como é a distribuição da duração das viagens (trip duration)?
 
 
-```
+```python
 # TODO: Faça um gráfico baseado nas durações
 trip_data.groupby('duration', as_index= False).count().plot.hist()
 ```
@@ -674,7 +678,7 @@ trip_data.groupby('duration', as_index= False).count().plot.hist()
 
 
 
-```
+```python
 # rode este comando abaixo caso esteja em dúvida quanto ao resultado esperado
 usage_plot(trip_data, 'duration')
 ```
@@ -688,27 +692,25 @@ Parece muito estranho, não é? Dê uma olhada nos valores de duração no eixo 
 Ao explorar os dados, muitas vezes você precisará trabalhar com os parâmetros da função de visualização para facilitar a compreensão dos dados. É aqui que os filtros vão ajudar você. Comecemos por limitar as  viagens de menos de 60 minutos.
 
 
-```
+```python
 # TODO: faça um gráfico de barras para os dados com duração inferior a 60 minutos.
 duracao_60 = trip_data[trip_data['duration'] < 60]
-duracao_60['duration'].value_counts().plot( kind='hist')
-#duracao_60.groupby('duration', as_index= False).count().plot.hist()
 
+#duracao_60['duration'].value_counts().plot( kind='hist')
+
+plt.hist(duracao_60['duration'])
+plt.title("Número de Viagens por Duração")
+plt.xlabel("Duração")
+plt.ylabel("Número de Viagens")
+plt.show()
 ```
 
 
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x22c4d1cc908>
-
+![png](output_38_0.png)
 
 
 
-![png](output_38_1.png)
-
-
-
-```
+```python
 # descomente a linha abaixo para verificar o gráfico esperado.
 usage_plot(trip_data, 'duration', ['duration < 60'])
 ```
@@ -724,26 +726,25 @@ Felizmente, o Pandas e o Matplotlib te dão a opção de resolver ester problema
 No campo abaixo, faça o ajuste do gráfico para que os limites das barras se encontrem nas extremidades e que as barras tenham tamanho 5 (0, 5, 10, 15, etc). Se precisar, use a [documentação](http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.hist.html#matplotlib.axes.Axes.hist).
 
 
-```
+```python
 # faça o gráfico ajustado que começará no 0 e terá o bin size de 5
 duracao_60 = trip_data[trip_data['duration'] < 60]
-duracao_60['duration'].plot( kind='hist',bins=[0,5,10,15,20,25,30,35,40,45,50,55,60])
+#duracao_60['duration'].plot( kind='hist',bins=[0,5,10,15,20,25,30,35,40,45,50,55,60])
+
+plt.hist(duracao_60['duration'], bins=[0,5,10,15,20,25,30,35,40,45,50,55,60] )
+plt.title("Número de Viagens por Duração")
+plt.xlabel("Duração")
+plt.ylabel("Número de Viagens")
+plt.show()
 
 ```
 
 
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x22c4fa17080>
-
+![png](output_41_0.png)
 
 
 
-![png](output_41_1.png)
-
-
-
-```
+```python
 # rode esta linha para verificar como deve ficar o seu gráfico
 usage_plot(trip_data, 'duration', ['duration < 60'], boundary = 0, bin_width = 5)
 ```
@@ -765,7 +766,7 @@ Qual o intervalo de duração com maior quantidade de viagens?
 **Reposta**: De: 5-10
 
 
-```
+```python
 # Pergunga 4.1 Contagem de viagem
 
 df = trip_data[ (trip_data['duration'] >= 5) & (trip_data['duration'] <= 10)]
@@ -800,7 +801,7 @@ Qual origem e destino tem a maior quantidade de viagens?  Aproximadamente quanta
 Agora que você fez alguma exploração em uma pequena amostra do conjunto de dados, é hora de avançar e reunir todos os dados em um único arquivo e ver quais tendências você pode encontrar. O código abaixo usará a mesma função `summarise_data()` para processar dados. Depois de executar a célula abaixo, você terá processado todos os dados em um único arquivo de dados. Observe que a função não exibirá qualquer saída enquanto ele é executado, e isso pode demorar um pouco para ser concluído, pois você tem muito mais dados do que a amostra com a qual você trabalhou.
 
 
-```
+```python
 station_data = ['201402_station_data.csv',
                 '201408_station_data.csv',
                 '201508_station_data.csv' ]
@@ -817,7 +818,7 @@ summarise_data(trip_in, station_data, trip_out)
 Já que a função `summarise_data()` escreveu um arquivo de saída, a célula acima não precisa ser rodada novamente mesmo que este notebook seja fechado e uma nova sessão seja criada. Você pode simplesmente ler os dados novamente e fazer a exploração deste ponto (não esqueça de executar a parte das funções no começo do notebook caso esteja em uma nova sessão)
 
 
-```
+```python
 trip_data = pd.read_csv('babs_y1_y2_summary.csv')
 display(trip_data.head())
 ```
@@ -930,10 +931,11 @@ Um feito com suas explorações, copie as duas visualizações que você achou m
 
 Para ver alguns outros tipos de gráficos que o matplotlib (padrão do Pandas) possui, leia [este artigo](https://www.labri.fr/perso/nrougier/teaching/matplotlib/#other-types-of-plots). 
 
+
 Para entender um pouco mais como e quais gráficos podem ser úteis, leia [este documento](https://www.tableau.com/sites/default/files/media/Whitepapers/which_chart_v6_ptb.pdf). Ele lhe dará um pouco de idéia de como mostrar os dados de forma mais acertada
 
 
-```
+```python
 display(trip_data.head())
 ```
 
@@ -965,6 +967,7 @@ display(trip_data.head())
       <th>start_city</th>
       <th>end_city</th>
       <th>subscription_type</th>
+      <th>weekName</th>
     </tr>
   </thead>
   <tbody>
@@ -979,6 +982,7 @@ display(trip_data.head())
       <td>San Francisco</td>
       <td>San Francisco</td>
       <td>Subscriber</td>
+      <td>Thursday</td>
     </tr>
     <tr>
       <th>1</th>
@@ -991,6 +995,7 @@ display(trip_data.head())
       <td>San Jose</td>
       <td>San Jose</td>
       <td>Subscriber</td>
+      <td>Thursday</td>
     </tr>
     <tr>
       <th>2</th>
@@ -1003,6 +1008,7 @@ display(trip_data.head())
       <td>Mountain View</td>
       <td>Mountain View</td>
       <td>Subscriber</td>
+      <td>Thursday</td>
     </tr>
     <tr>
       <th>3</th>
@@ -1015,6 +1021,7 @@ display(trip_data.head())
       <td>San Jose</td>
       <td>San Jose</td>
       <td>Subscriber</td>
+      <td>Thursday</td>
     </tr>
     <tr>
       <th>4</th>
@@ -1027,6 +1034,7 @@ display(trip_data.head())
       <td>San Francisco</td>
       <td>San Francisco</td>
       <td>Subscriber</td>
+      <td>Thursday</td>
     </tr>
   </tbody>
 </table>
@@ -1034,15 +1042,20 @@ display(trip_data.head())
 
 
 
-```
-trip_data.groupby(['start_city','start_year'])['start_month'].count().plot(kind='line',figsize=(16,5))
+```python
+from matplotlib.gridspec import GridSpec
+
+# Gráfico final 1
+df1 = trip_data.groupby(['start_city','end_city'])['duration'].mean()
+df1.plot(kind='hist', figsize=(10,5))
+
 
 ```
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x22c5f56d4a8>
+    <matplotlib.axes._subplots.AxesSubplot at 0x16a419ff048>
 
 
 
@@ -1054,51 +1067,203 @@ trip_data.groupby(['start_city','start_year'])['start_month'].count().plot(kind=
 Explore os dados e faça um gráfico que demonstre alguma particularidade dos dados:
 
 
+```python
+categ_group = trip_data.groupby(['start_city','end_city'])['duration'].sum()
+display(categ_group)
 ```
+
+
+    start_city     end_city     
+    Mountain View  Mountain View    4.872895e+05
+                   Palo Alto        3.556388e+04
+                   Redwood City     4.595333e+02
+                   San Francisco    8.719133e+03
+                   San Jose         1.105252e+04
+    Palo Alto      Mountain View    3.162427e+04
+                   Palo Alto        4.446746e+05
+                   Redwood City     1.774750e+03
+                   San Francisco    4.906417e+03
+    Redwood City   Mountain View    1.510867e+03
+                   Palo Alto        8.392600e+03
+                   Redwood City     1.250707e+05
+                   San Francisco    7.534500e+02
+                   San Jose         3.831900e+03
+    San Francisco  Mountain View    5.731333e+02
+                   Palo Alto        1.278700e+03
+                   Redwood City     9.765500e+02
+                   San Francisco    1.032859e+07
+                   San Jose         2.743217e+03
+    San Jose       Mountain View    7.339433e+03
+                   Palo Alto        6.676717e+03
+                   San Francisco    1.519000e+03
+                   San Jose         8.560305e+05
+    Name: duration, dtype: float64
+
+
+
+```python
+# Tabela de Referencia cruzada para analisar as informações
+categ_group.unstack().head() 
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>end_city</th>
+      <th>Mountain View</th>
+      <th>Palo Alto</th>
+      <th>Redwood City</th>
+      <th>San Francisco</th>
+      <th>San Jose</th>
+    </tr>
+    <tr>
+      <th>start_city</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Mountain View</th>
+      <td>487289.500000</td>
+      <td>35563.883333</td>
+      <td>459.533333</td>
+      <td>8.719133e+03</td>
+      <td>11052.516667</td>
+    </tr>
+    <tr>
+      <th>Palo Alto</th>
+      <td>31624.266667</td>
+      <td>444674.600000</td>
+      <td>1774.750000</td>
+      <td>4.906417e+03</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Redwood City</th>
+      <td>1510.866667</td>
+      <td>8392.600000</td>
+      <td>125070.666667</td>
+      <td>7.534500e+02</td>
+      <td>3831.900000</td>
+    </tr>
+    <tr>
+      <th>San Francisco</th>
+      <td>573.133333</td>
+      <td>1278.700000</td>
+      <td>976.550000</td>
+      <td>1.032859e+07</td>
+      <td>2743.216667</td>
+    </tr>
+    <tr>
+      <th>San Jose</th>
+      <td>7339.433333</td>
+      <td>6676.716667</td>
+      <td>NaN</td>
+      <td>1.519000e+03</td>
+      <td>856030.550000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
 # Gráfico final 1
-df1 = trip_data.groupby(['subscription_type','start_year'])['subscription_type','start_year'].count()
-df1.plot(kind='line',figsize=(16,5))
+my_plot = categ_group.unstack().plot(kind='bar',stacked=True,title="Análise de Locação por Cidade e Devolução")
+my_plot.set_xlabel("Cidade")
+my_plot.set_ylabel("Duração")
 
 ```
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x22c5bd53e80>
+    Text(0,0.5,'Duração')
 
 
 
 
-![png](output_57_1.png)
+![png](output_59_1.png)
 
 
 O que é interessante na visualização acima? Por que você a selecionou?
 
-**Answer**: Analisar para identificar o ano com maior tendencia ao uso de bicicletas e por qual motivo.
+**Answer**: Nesta análise é possível identificar os seguintes comportamentos:
+- A cidade de retira e devolução sempre são os mesmo,
+- A cidade onde há maior locação e utilização das bicicletas
+- Quem aluga a bicicleta na Cidade de San Jose nunca devolve na cidade de Redwood City	
+- Quem aluga a bicicleta em Palo Alto nunca devolve na cidade de San Jose 
 
 # Pergunta 5b
 Faça um gráfico que demonstre alguma particularidade dos dados:
 
 
-```
+```python
 # Gráfico Final 2
-trip_data.groupby(['start_city','start_year'])['start_month'].count().plot(kind='line',figsize=(16,5))
+
+from matplotlib.gridspec import GridSpec
+
+weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday", "Sunday"]
+
+week_d1 = trip_data[trip_data['start_year'] == 2013].groupby(["weekday"])["duration"].sum()
+week_d2 = trip_data[trip_data['start_year'] == 2014].groupby(["weekday"])["duration"].sum()
+week_d3 = trip_data[trip_data['start_year'] == 2015].groupby(["weekday"])["duration"].sum()
+
+explode=(0.2, 0, 0, 0,0,0.1,0)
+#explode = list()
+#for k in weekdays:
+#    explode.append(0.1)
+
+the_grid = GridSpec(1, 3)
+the_grid.update( right=2)
+plt.subplot(the_grid[0, 0], aspect=1)
+
+plt.title("Ano 2013")
+plt.pie(week_d1, explode=explode, labels=weekdays, autopct='%1.1f%%', shadow=True, startangle=30)
+
+plt.subplot(the_grid[0, 1], aspect=1)
+plt.title("Ano 2014")
+plt.pie(week_d2, explode=explode, labels=weekdays, autopct='%.0f%%', shadow=True, startangle=80)
+
+plt.subplot(the_grid[0, 2], aspect=1)
+plt.title("Ano 2015")
+plt.pie(week_d3, explode=explode, labels=weekdays, autopct='%.0f%%', shadow=True, startangle=40)
+
+plt.axis('equal')
+plt.show()
 ```
 
 
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x22c5f4ee1d0>
-
-
-
-
-![png](output_60_1.png)
+![png](output_62_0.png)
 
 
 O que é interessante na visualização acima? Por que você a selecionou?
 
-**Answer**: A Cidade de San Francisco, em 2014 teve maior solicitação de bicicletas.
+**Answer**: Nesta análise é possível identificar no ano qual dia da semana há maior utilização das bicicletas.
+É que também há um padrão, uma distribuição uniforme na utilização das bicicletas na maioria dos dias da semana.
 
 ## Conclusões
 
