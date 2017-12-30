@@ -630,13 +630,15 @@ Na caixa abaixo, faça um gráfico de viagens x tipo de subscrição do tipo bar
 # TODO: plote um gráfico de barras que mostre quantidade de viagens por subscription_type
 # lembrando que quando o comando .plot é usado, se pode escolher o tipo de gráfico usando 
 # o parâmetro kind. Ex: plot(kind='bar')
-trip_data['subscription_type'].value_counts().plot(kind='bar',figsize=(5,5))
+group_subs = trip_data.groupby('subscription_type')['duration'].count()
+
+group_subs.plot( kind='bar', title="Número de Viagens por Subscription Type")
 ```
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x22c4b5b9470>
+    <matplotlib.axes._subplots.AxesSubplot at 0x21fdacac0f0>
 
 
 
@@ -663,13 +665,13 @@ Parece que existe 50% mais viagens feitas por assinantes (subscribers) no primei
 
 ```python
 # TODO: Faça um gráfico baseado nas durações
-trip_data.groupby('duration', as_index= False).count().plot.hist()
+trip_data.groupby('duration', as_index= False).count().plot.hist("Número de Viagens por Duration")
 ```
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x22c4b6bb9b0>
+    <matplotlib.axes._subplots.AxesSubplot at 0x21fdad38e80>
 
 
 
@@ -1041,28 +1043,6 @@ display(trip_data.head())
 </div>
 
 
-
-```python
-from matplotlib.gridspec import GridSpec
-
-# Gráfico final 1
-df1 = trip_data.groupby(['start_city','end_city'])['duration'].mean()
-df1.plot(kind='hist', figsize=(10,5))
-
-
-```
-
-
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x16a419ff048>
-
-
-
-
-![png](output_55_1.png)
-
-
 # Pergunta 5a
 Explore os dados e faça um gráfico que demonstre alguma particularidade dos dados:
 
@@ -1206,7 +1186,7 @@ my_plot.set_ylabel("Duração")
 
 
 
-![png](output_59_1.png)
+![png](output_58_1.png)
 
 
 O que é interessante na visualização acima? Por que você a selecionou?
@@ -1257,7 +1237,7 @@ plt.show()
 ```
 
 
-![png](output_62_0.png)
+![png](output_61_0.png)
 
 
 O que é interessante na visualização acima? Por que você a selecionou?
