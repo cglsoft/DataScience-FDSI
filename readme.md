@@ -665,19 +665,15 @@ Parece que existe 50% mais viagens feitas por assinantes (subscribers) no primei
 
 ```python
 # TODO: Faça um gráfico baseado nas durações
-
-trip_data['duration'].plot( kind="hist", title="Número de Viagens por Duration")
+plt.hist(trip_data['duration'])
+plt.title("Número de Viagens por Duration")
+plt.xlabel("Duração")
+plt.ylabel("Número de Viagens")
+plt.show()
 ```
 
 
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x21c23750710>
-
-
-
-
-![png](output_35_1.png)
+![png](output_35_0.png)
 
 
 
@@ -698,8 +694,6 @@ Ao explorar os dados, muitas vezes você precisará trabalhar com os parâmetros
 ```python
 # TODO: faça um gráfico de barras para os dados com duração inferior a 60 minutos.
 duracao_60 = trip_data[trip_data['duration'] < 60]
-
-#duracao_60['duration'].value_counts().plot( kind='hist')
 
 plt.hist(duracao_60['duration'])
 plt.title("Número de Viagens por Duração")
@@ -739,7 +733,6 @@ plt.title("Número de Viagens por Duração")
 plt.xlabel("Duração")
 plt.ylabel("Número de Viagens")
 plt.show()
-
 ```
 
 
@@ -970,7 +963,6 @@ display(trip_data.head())
       <th>start_city</th>
       <th>end_city</th>
       <th>subscription_type</th>
-      <th>weekName</th>
     </tr>
   </thead>
   <tbody>
@@ -985,7 +977,6 @@ display(trip_data.head())
       <td>San Francisco</td>
       <td>San Francisco</td>
       <td>Subscriber</td>
-      <td>Thursday</td>
     </tr>
     <tr>
       <th>1</th>
@@ -998,7 +989,6 @@ display(trip_data.head())
       <td>San Jose</td>
       <td>San Jose</td>
       <td>Subscriber</td>
-      <td>Thursday</td>
     </tr>
     <tr>
       <th>2</th>
@@ -1011,7 +1001,6 @@ display(trip_data.head())
       <td>Mountain View</td>
       <td>Mountain View</td>
       <td>Subscriber</td>
-      <td>Thursday</td>
     </tr>
     <tr>
       <th>3</th>
@@ -1024,7 +1013,6 @@ display(trip_data.head())
       <td>San Jose</td>
       <td>San Jose</td>
       <td>Subscriber</td>
-      <td>Thursday</td>
     </tr>
     <tr>
       <th>4</th>
@@ -1037,7 +1025,6 @@ display(trip_data.head())
       <td>San Francisco</td>
       <td>San Francisco</td>
       <td>Subscriber</td>
-      <td>Thursday</td>
     </tr>
   </tbody>
 </table>
@@ -1173,16 +1160,18 @@ categ_group.unstack().head()
 
 ```python
 # Gráfico final 1
-my_plot = categ_group.unstack().plot(kind='bar',stacked=True,title="Análise de Locação por Cidade e Devolução")
-my_plot.set_xlabel("Cidade")
-my_plot.set_ylabel("Duração")
+#my_plot = categ_group.unstack().plot(kind='bar',stacked=True,title="Análise de Locação por Cidade e Devolução",figsize=(10,5))
+
+my_plot = categ_group.unstack().plot.barh(stacked=True,title="Análise de Locação por Cidade e Devolução",figsize=(10,5))
+my_plot.set_xlabel("Duração")
+my_plot.set_ylabel("Cidades")
 
 ```
 
 
 
 
-    Text(0,0.5,'Duração')
+    Text(0,0.5,'Cidades')
 
 
 
